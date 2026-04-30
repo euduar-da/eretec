@@ -52,4 +52,3 @@ src/
 
 ---
 
-ERETec 2024 · Encontro Regional de Tecnologia · UERN, Mossoró-RN

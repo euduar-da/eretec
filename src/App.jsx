@@ -374,7 +374,7 @@ export default function App() {
                   Palestras &amp; Oficinas
                 </h1>
                 <p style={{fontSize:13,color:MUTED,fontFamily:'monospace',marginTop:4}}>
-                  14 e 15 de novembro · UERN, Mossoró-RN
+                  09 de Maio · EEEP Maria Célia, Pereiro-CE
                 </p>
               </div>
 
