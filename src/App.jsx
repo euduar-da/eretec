@@ -202,10 +202,8 @@ export default function App() {
 
             {/* Logo REAL */}
             <div style={{textAlign:'center',marginBottom:'1.5rem'}}>
-              <div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',
-                background:NAVY, borderRadius:20, padding:12,
-                border:`2px solid ${NEON}30`, marginBottom:12}}>
-                <EretecLogo size={72} />
+              <div style={{display:'inline-block', marginBottom:12}}>
+                <EretecLogo size={100} style={{borderRadius:16, display:'block'}} />
               </div>
               <div style={{fontSize:28,fontWeight:900,letterSpacing:'-0.03em',lineHeight:1}}>
                 <span style={{color:WHITE}}>eretec</span>
@@ -291,10 +289,8 @@ export default function App() {
           display:'flex',alignItems:'center',justifyContent:'space-between',height:56}}>
 
           {/* Logo no nav */}
-          <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <div style={{background:NAVY,borderRadius:10,padding:'4px 6px',border:`1px solid ${NEON}40`}}>
-              <EretecLogo size={32}/>
-            </div>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <EretecLogo size={38} style={{borderRadius:8, display:'block'}}/>
             <span style={{fontWeight:900,fontSize:18,letterSpacing:'-0.02em',color:WHITE}}>
               eretec
             </span>
