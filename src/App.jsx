@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const NAVY   = '#12126e';
 const NEON   = '#c8f500';
@@ -107,28 +107,25 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn]   = useState(false);
   const [isLoginTab, setIsLoginTab]   = useState(true);
   const [activeTab, setActiveTab]     = useState('cronograma');
-  const [selectedContent, setSelectedContent] = useState(null);
-  const [errorCount, setErrorCount]   = useState(0);
   const [formData, setFormData]       = useState({ email: '', pass: '' });
   const [modal, setModal]             = useState({ show: false, msg: '', type: '' });
-  const [scoreForms, setScoreForms]   = useState(null);
   const [searchQ, setSearchQ]         = useState('');
   const [filterTipo, setFilterTipo]   = useState('todos');
   const [selectedCard, setSelectedCard] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const tiposDeTeste = [
-    { id: 'unidade',    nome: 'Teste de Unidade',    desc: 'Verifica a menor unidade de código isoladamente.' },
-    { id: 'integracao', nome: 'Teste de Integração', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' }, // [BUG-01]
-    { id: 'regressao',  nome: 'Teste de Regressão',  desc: 'Garante que novas alterações não quebraram o que já funcionava.' },
-    { id: 'aceitacao',  nome: 'Teste de Aceitação',  desc: 'Validação final pelo usuário para entrega do produto.' },
-    { id: 'validacao',  nome: 'Teste de Validação',  desc: 'Verifica se o sistema atende aos requisitos de negócio (Aceitação).' }
-  ];
+  const [erro, setErro] = useState('');
+  const [tooltip, setTooltip] = useState(false);
+  const [randomPalestras, setRandomPalestras] = useState([]);
+  
 
   const showFeedback = (msg, type) => {
-    setModal({ show: true, msg, type });
-    setTimeout(() => setModal({ show: false, msg: '', type: '' }), 2500);
-  };
+    setErro(msg);        // usa o estado do tooltip
+    setTooltip(true);    // ativa tooltip
+
+    setTimeout(() => {
+      setTooltip(false);
+    }, 2500);
+};
 
   const handleLogout = () => {
     setIsLoggedIn(false); setActiveTab('cronograma'); setSelectedContent(null);
@@ -149,15 +146,6 @@ export default function App() {
     }
   };
 
-  const handleReadMore = (id) => {
-    if (id === 'unidade') { setActiveTab('forms'); return; } // [BUG-02]
-    if (id === 'aceitacao') { // [BUG-03]
-      setSelectedContent({ nome: 'Teste de Aceitação', texto: 'O Teste de Regressão garante que novas versões não introduziram falhas em funcionalidades que já estavam operacionais.' });
-      return;
-    }
-    const item = tiposDeTeste.find(t => t.id === id);
-    setSelectedContent({ nome: item.nome, texto: item.desc });
-  };
 
   const filteredPalestras = palestras.filter(p => {
     const tipoOk   = filterTipo === 'todos' || p.tipo === filterTipo; // [BUG-C3] workshop≠oficina
@@ -170,6 +158,18 @@ export default function App() {
     if (tipo === 'oficina') return { bg: 'rgba(200,245,0,0.15)',   color: NEON,      label: 'OFICINA'  };
     return                         { bg: 'rgba(108,99,255,0.2)',   color: '#a89aff', label: 'PALESTRA' };
   };
+
+    const sortearPalestras = () => {
+      const embaralhadas = [...palestras].sort(() => Math.random() - 0.5);
+      const selecionadas = embaralhadas.slice(0, 4);
+      setRandomPalestras(selecionadas);
+    };
+
+    useEffect(() => {
+      if (activeTab === 'aleatorio') {
+        sortearPalestras();
+      }
+    }, [activeTab]);
 
   // ── LOGIN SCREEN ────────────────────────────────────────────
   if (!isLoggedIn) {
@@ -184,18 +184,23 @@ export default function App() {
             background:`radial-gradient(circle, ${NEON}18, transparent)`, pointerEvents:'none'}}/>
           <div style={{position:'absolute',bottom:'10%',right:'5%',width:400,height:400,borderRadius:'50%',
             background:`radial-gradient(circle, #6c63ff18, transparent)`, pointerEvents:'none'}}/>
-
-          {modal.show && (
-            <div style={{position:'fixed',top:32,left:0,right:0,display:'flex',justifyContent:'center',zIndex:99}}>
-              <div style={{padding:'12px 24px',borderRadius:12,fontWeight:700,fontSize:14,
-                background: modal.type==='success'?'#1a3a1a':'#3a1a1a',
-                border:`2px solid ${modal.type==='success'?'#43e97b':'#ff6584'}`,
-                color: modal.type==='success'?'#43e97b':'#ff6584'}}>
-                {modal.msg}
-              </div>
-            </div>
-          )}
-
+          {tooltip && (
+      <div style={{
+        position: 'fixed',
+        top: 20,
+        right: 20,
+        background: '#ff6584',
+        color: 'white',
+        padding: '12px 16px',
+        borderRadius: 10,
+        fontWeight: 700,
+        zIndex: 9999,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+        animation: 'slideIn 0.3s ease'
+      }}>
+        {erro}
+      </div>
+    )}
           <div className="login-card" style={{width:'100%',maxWidth:440,background:'rgba(255,255,255,0.04)',
             border:`1px solid ${BORDER}`, borderRadius:24, padding:'2.5rem',
             backdropFilter:'blur(16px)', boxSizing:'border-box'}}>
@@ -258,7 +263,7 @@ export default function App() {
             </div>
 
             <p style={{marginTop:16,textAlign:'center',fontSize:11,color:'#3a3a6a'}}>
-              ERETec 2024 · 14 e 15/11 · UERN, Mossoró-RN
+              ERETEC 2024 · 09 de Maio · EEEP Maria Célia, Pereiro-RN
             </p>
           </div>
         </div>
@@ -272,16 +277,23 @@ export default function App() {
       <style>{mobileStyle}</style>
       <div style={{minHeight:'100vh',background:DARKER,fontFamily:'sans-serif',color:WHITE,display:'flex',flexDirection:'column'}}>
 
-        {modal.show && (
-          <div style={{position:'fixed',inset:0,display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,backdropFilter:'blur(2px)'}}>
-            <div style={{padding:'20px 32px',borderRadius:16,fontWeight:800,fontSize:18,textAlign:'center',
-              background: modal.type==='success'?'#0d2a0d':'#2a0d0d',
-              border:`2px solid ${modal.type==='success'?'#43e97b':'#ff6584'}`,
-              color: modal.type==='success'?'#43e97b':'#ff6584'}}>
-              {modal.msg}
-            </div>
-          </div>
-        )}
+               {tooltip && (
+  <div style={{
+    position: 'fixed',
+    top: 20,
+    right: 20,
+    background: '#ff6584',
+    color: 'white',
+    padding: '12px 16px',
+    borderRadius: 10,
+    fontWeight: 700,
+    zIndex: 9999,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+    animation: 'slideIn 0.3s ease'
+  }}>
+    {erro}
+  </div>
+)}
 
         {/* ── NAVBAR ─────────────────────────────────────────── */}
         <nav className="nav-bar" style={{background:DARK, borderBottom:`1px solid ${BORDER}`,
@@ -299,9 +311,8 @@ export default function App() {
           {/* Links desktop */}
           <div className="nav-links" style={{display:'flex',alignItems:'center',gap:8}}>
             {[
-              { key:'cronograma', label:'Cronograma' },
-              { key:'dashboard',  label:'Tipos de Teste' },
-              { key:'forms',      label:'Questionário' },
+                { key:'cronograma', label:'Cronograma' },
+                { key:'aleatorio',  label:'Inscrições' },
             ].map(({key, label}) => (
               <button key={key} onClick={() => { setActiveTab(key); setSelectedContent(null); setSelectedCard(null); setMobileMenuOpen(false); }}
                 style={{padding:'6px 16px',borderRadius:8,border:'none',fontWeight:700,fontSize:13,cursor:'pointer',
@@ -343,9 +354,8 @@ export default function App() {
         {mobileMenuOpen && (
           <div style={{background:DARK,borderBottom:`1px solid ${BORDER}`,padding:'0.5rem 1rem',zIndex:99}}>
             {[
-              { key:'cronograma', label:'📅 Cronograma' },
-              { key:'dashboard',  label:'🧪 Tipos de Teste' },
-              { key:'forms',      label:'📝 Questionário' },
+              { key:'cronograma', label:'Cronograma' },
+              { key:'aleatorio',  label:'Inscrições' },
             ].map(({key, label}) => (
               <button key={key} onClick={() => { setActiveTab(key); setSelectedContent(null); setSelectedCard(null); setMobileMenuOpen(false); }}
                 style={{display:'block',width:'100%',padding:'12px 16px',borderRadius:8,border:'none',
@@ -551,68 +561,80 @@ export default function App() {
               )}
             </div>
           )}
+      
+      {activeTab === 'aleatorio' && (
+        <div>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <p style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '0.15em',
+              color: NEON,
+              textTransform: 'uppercase',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              marginBottom: 6
+            }}>
+              <span style={{ width: 24, height: 2, background: NEON }} />
+              Inscrições
+            </p>
 
-          {/* ══ QUESTIONÁRIO ════════════════════════════════════ */}
-          {activeTab === 'forms' && (
-            <div style={{maxWidth:720,margin:'0 auto',background:CARD,
-              border:`1px solid ${BORDER}`,borderRadius:20,padding:'2rem'}}>
-              <div style={{height:3,width:48,borderRadius:2,margin:'0 auto 12px',
-                background:`linear-gradient(90deg,${NEON},#6c63ff)`}}/>
-              <h2 style={{fontSize:24,fontWeight:900,textAlign:'center',letterSpacing:'-0.02em',
-                paddingBottom:16,borderBottom:`1px solid ${BORDER}`,marginBottom:28}}>
-                AVALIAÇÃO TÉCNICA
-              </h2>
+            <h1 className="main-title" style={{
+              fontSize: 36,
+              fontWeight: 900,
+              margin: 0
+            }}>
+              Palestras Disponíveis
+            </h1>
+          </div>
 
-              <div style={{display:'flex',flexDirection:'column',gap:28}}>
-                {[
-                  { q:'1. Qual teste foca na experiência do usuário final?', r:['Aceitação','Unidade'],    c:0 },
-                  { q:'2. Mudar o código e testar se algo quebrou é:',       r:['Regressão','Validação'],  c:0 },
-                  { q:'3. O teste de Caixa Branca foca em estruturas:',      r:['Internas','Externas'],    c:0 },
-                  { q:'4. Qual teste valida a comunicação entre módulos?',   r:['Integração','Performance'],c:0 },
-                ].map((item, idx) => (
-                  <div key={idx}>
-                    <p style={{fontWeight:700,fontSize:15,marginBottom:12}}>{item.q}</p>
-                    <div className="quiz-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
-                      {item.r.map((opt, i) => (
-                        <button key={i}
-                          onClick={() => {
-                            if (i === item.c) showFeedback('Acertou!', 'success');
-                            else { setErrorCount(prev => prev+1); showFeedback('Errou!', 'error'); } // [BUG-07]
-                          }}
-                          style={{padding:'14px',borderRadius:10,textAlign:'left',fontWeight:600,
-                            fontSize:14,cursor:'pointer',
-                            background:'#1a1a4a',border:`2px solid ${BORDER}`,color:'#c0c0d0'}}
-                          onMouseEnter={e => { e.currentTarget.style.borderColor=NEON; e.currentTarget.style.background='#1e1e50'; }}
-                          onMouseLeave={e => { e.currentTarget.style.borderColor=BORDER; e.currentTarget.style.background='#1a1a4a'; }}>
-                          {opt}
-                        </button>
-                      ))}
-                    </div>
+
+          <div className="cards-grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))',
+            gap: 16
+          }}>
+            {randomPalestras.map(p => {
+              const badge = badgeColor(p.tipo);
+
+              return (
+                <div key={p.id}
+                  style={{
+                    background: CARD,
+                    border: `1px solid ${BORDER}`,
+                    borderRadius: 16,
+                    padding: '1.25rem'
+                  }}
+                >
+                  <span style={{
+                    display: 'inline-block',
+                    padding: '2px 10px',
+                    borderRadius: 999,
+                    fontSize: 10,
+                    fontWeight: 800,
+                    marginBottom: 10,
+                    background: badge.bg,
+                    color: badge.color
+                  }}>
+                    {badge.label}
+                  </span>
+
+                  <div style={{ fontWeight: 800, marginBottom: 8 }}>
+                    {p.titulo}
                   </div>
-                ))}
 
-                <div style={{textAlign:'center',paddingTop:16,borderTop:`1px solid ${BORDER}`}}>
-                  <p style={{fontWeight:800,fontSize:13,color:'#ff6584'}}>
-                    {errorCount >= 3 ? '⛔ SISTEMA BLOQUEADO' : `ERROS REGISTRADOS: ${errorCount}`}
-                  </p>
+                  <div style={{ fontSize: 12, color: MUTED }}>
+                    {p.palestrante}
+                  </div>
+
                 </div>
-
-                <button
-                  onClick={() => { setScoreForms(Math.floor(Math.random()*4)+1); showFeedback('Formulário Enviado!','success'); }} // [BUG-06]
-                  style={{padding:'14px',borderRadius:12,border:'none',fontWeight:900,fontSize:15,
-                    cursor:'pointer',color:DARK,
-                    background:`linear-gradient(135deg,${NEON},#a0c000)`}}>
-                  ENVIAR FORMULÁRIO
-                </button>
-
-                {scoreForms !== null && (
-                  <p style={{textAlign:'center',fontWeight:800,fontSize:22,color:NEON}}>
-                    Acertos: {scoreForms} / 4
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
+              );
+            })}
+          </div>
+        </div>
+      )}
+        
         </main>
       </div>
     </>
