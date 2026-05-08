@@ -40,67 +40,203 @@ const mobileStyle = `
 `;
 
 // ── Dados das palestras ────────────────────────────────────
+// ── Dados das palestras ────────────────────────────────────
 const palestras = [
   {
-    id: 1, tipo: 'keynote',
-    titulo: 'IA Generativa: O Fim da Programação?',
-    palestrante: 'Dra. Fernanda Quirino', bio: 'Pesquisadora em IA · UERN',
-    horario: '00:00 - 10:00', // [BUG-C1]
-    sala: 'Auditório Principal', dia: 1, vagas: 200, inscritos: 187,
-    desc: 'Vivemos uma revolução silenciosa. A IA generativa já escreve código, gera testes e refatora sistemas. Mas o programador será substituído?'
+    id: 1,
+    tipo: 'keynote',
+    titulo: 'Abertura Oficial',
+    palestrante: 'Organização ERETec 2026',
+    bio: 'Fala inicial + Música',
+    horario: '08:00 - 08:30',
+    sala: 'Auditório Principal',
+    dia: 1,
+    vagas: 300,
+    inscritos: 210,
+    desc: 'Cerimônia oficial de abertura do ERETec 2026 com apresentação musical e fala inicial da organização.'
   },
+
   {
-    id: 2, tipo: 'palestra',
-    titulo: 'Arquitetura de Microsserviços na Prática',
-    palestrante: 'Rafael Amorim', bio: 'Engenheiro de Software · Totvs',
-    horario: '10:30 - 11:30',
-    sala: 'Lab 01', // [BUG-C5]
-    dia: 1, vagas: 60, inscritos: 60,
-    desc: 'Quando usar microsserviços e quando evitar? Casos reais de arquitetura com aprendizados de quem já implementou sistemas críticos.'
+    id: 2,
+    tipo: 'palestra',
+    titulo: 'Apresentação do Projeto SIS',
+    palestrante: 'Equipe SIS',
+    bio: 'Sistema Integrado',
+    horario: '08:30 - 09:00',
+    sala: 'Auditório Principal',
+    dia: 1,
+    vagas: 250,
+    inscritos: 180,
+    desc: 'Apresentação oficial do projeto SIS e demonstração das funcionalidades desenvolvidas.'
   },
+
   {
-    id: 3, tipo: 'oficina',
-    titulo: 'React do Zero ao Deploy',
-    palestrante: 'Camila Torres', bio: 'Desenvolvedora Front-end · Freelancer',
-    horario: '13:00 - 17:00', sala: 'Lab 01', dia: 1, vagas: 30, inscritos: 28,
-    desc: 'Workshop intensivo de React: componentização, hooks, Zustand e deploy na Vercel com GitHub Actions.'
+    id: 3,
+    tipo: 'palestra',
+    titulo: 'Nosso Estudo. Nosso Trabalho: Transformando Conhecimento em Oportunidade',
+    palestrante: 'Kayck',
+    bio: 'Palestrante Convidado',
+    horario: '09:20 - 10:00',
+    sala: 'Auditório Principal',
+    dia: 1,
+    vagas: 250,
+    inscritos: 230,
+    desc: 'Uma palestra inspiradora sobre como o conhecimento pode transformar trajetórias pessoais e profissionais.'
   },
+
   {
-    id: 4, tipo: 'palestra',
-    titulo: 'Segurança Ofensiva: Pentest para Iniciantes',
-    palestrante: 'Marcos Vinicius Leite', bio: 'Pentester · BugBounty Hall of Fame',
-    horario: '14:00 - 15:00', sala: 'Sala 03', dia: 1, vagas: 80, inscritos: 74,
-    desc: 'Como os hackers pensam? SQLi, XSS, IDOR e como se defender. Demo ao vivo em ambiente isolado.'
+    id: 4,
+    tipo: 'palestra',
+    titulo: 'A Engenharia da Minha Trajetória: do Sertão às Grandes Empresas, ao Empreendedorismo e ao Doutorado Internacional',
+    palestrante: 'Walisson',
+    bio: 'Engenheiro e Empreendedor',
+    horario: '10:10 - 10:50',
+    sala: 'Auditório Principal',
+    dia: 1,
+    vagas: 250,
+    inscritos: 220,
+    desc: 'Relato da trajetória profissional e acadêmica desde o sertão até experiências internacionais.'
   },
+
   {
-    id: 5, tipo: 'oficina',
-    titulo: 'Python para Análise de Dados',
-    palestrante: 'Profa. Ana Beatriz Costa', bio: 'Docente · IFRN Mossoró',
-    horario: '08:00 - 12:00', sala: 'Lab 02', dia: 2, vagas: 25, inscritos: 25,
-    desc: 'Pandas, Matplotlib, Seaborn e Scikit-learn para machine learning básico. Traga seu laptop com Anaconda.'
+    id: 5,
+    tipo: 'palestra',
+    titulo: 'Testes de Software: por que sistemas falham e como evitar?',
+    palestrante: 'Maria Aparecida e Maria Eduarda',
+    bio: 'Palestrantes ERETec 2026',
+    horario: '11:00 - 11:50',
+    sala: 'Auditório Principal',
+    dia: 2,
+    vagas: 250,
+    inscritos: 245,
+    desc: 'Discussão sobre falhas históricas de software, importância dos testes e estratégias para evitar problemas em sistemas.'
   },
+
   {
-    id: 6, tipo: 'palestra',
-    titulo: 'DevOps & CI/CD: Do Commit ao Prod',
-    palestrante: 'Lucas Fernandes', bio: 'SRE · Stone Pagamentos',
-    horario: '09:30 - 10:30', sala: 'Auditório Principal', dia: 2, vagas: 200, inscritos: 130,
-    desc: 'Pipeline de CI/CD, Docker, Kubernetes, blue-green e canary deploy. O que é SRE na prática.'
+    id: 6,
+    tipo: 'oficina',
+    titulo: 'Maratona de Programação (Júnior)',
+    palestrante: 'Guilherme',
+    bio: 'Competição de Programação',
+    horario: '13:20 - 15:00',
+    sala: 'Sala de Aula 12',
+    dia: 1,
+    vagas: 40,
+    inscritos: 34,
+    desc: 'Competição voltada para iniciantes com desafios de lógica e programação.'
   },
+
   {
-    id: 7, tipo: 'palestra',
-    titulo: 'Acessibilidade Web não é opcional',
-    palestrante: 'Juliana Meireles', bio: 'UX Engineer · Governo Federal',
-    horario: '11:00 - 12:00', sala: 'Sala 01', dia: 2,
-    vagas: 50, inscritos: 53, // [BUG-C2]
-    desc: 'WCAG 2.1, ferramentas de auditoria e como retrofitar acessibilidade em sistemas legados.'
+    id: 7,
+    tipo: 'oficina',
+    titulo: 'Maratona de Programação (PRO)',
+    palestrante: 'Guilherme',
+    bio: 'Competição Avançada',
+    horario: '13:20 - 15:00',
+    sala: 'Sala de Aula 12',
+    dia: 1,
+    vagas: 40,
+    inscritos: 38,
+    desc: 'Maratona avançada para participantes experientes em algoritmos e resolução de problemas.'
   },
+
   {
-    id: 8, tipo: 'keynote',
-    titulo: 'Closing: Comunidade, Código & Conexão',
-    palestrante: 'Comitê ERETec 2024', bio: 'Organização do Evento',
-    horario: '17:00 - 18:00', sala: 'Auditório Principal', dia: 2, vagas: 300, inscritos: 220,
-    desc: 'Encerramento oficial. Premiações da maratona de programação e revelação da data do ERETec 2025!'
+    id: 8,
+    tipo: 'oficina',
+    titulo: 'Introdução ao Versionamento de Código',
+    palestrante: 'Kauã e Igor',
+    bio: 'Oficina de GitHub',
+    horario: '13:20 - 15:00',
+    sala: 'Laboratório de Informática',
+    dia: 1,
+    vagas: 35,
+    inscritos: 30,
+    desc: 'Aprenda os conceitos básicos de Git e GitHub para versionamento e colaboração em projetos.'
   },
+
+  {
+    id: 9,
+    tipo: 'oficina',
+    titulo: 'CriptoCTF: Decifre. Explore. Capture a Flag.',
+    palestrante: 'Marcos Paulo e Yure',
+    bio: 'Maratona de Criptografia',
+    horario: '13:20 - 15:00',
+    sala: 'Laboratório de Línguas',
+    dia: 1,
+    vagas: 30,
+    inscritos: 28,
+    desc: 'Desafios de criptografia e segurança digital em formato Capture The Flag.'
+  },
+
+  {
+    id: 10,
+    tipo: 'oficina',
+    titulo: 'Ateliê das Cores',
+    palestrante: 'Sara e Ana Heloisa',
+    bio: 'Oficina de Artes Manuais',
+    horario: '13:20 - 15:00',
+    sala: 'Laboratório de Biologia',
+    dia: 1,
+    vagas: 25,
+    inscritos: 19,
+    desc: 'Oficina criativa de artes manuais com foco em pintura, criatividade e expressão artística.'
+  },
+
+  {
+    id: 11,
+    tipo: 'oficina',
+    titulo: 'Fundamentos de Robótica com Arduino',
+    palestrante: 'Luiz Henrique',
+    bio: 'Oficina de Robótica',
+    horario: '13:20 - 15:00',
+    sala: 'Laboratório de Física',
+    dia: 1,
+    vagas: 25,
+    inscritos: 22,
+    desc: 'Introdução prática à robótica utilizando Arduino e componentes eletrônicos.'
+  },
+
+  {
+    id: 12,
+    tipo: 'oficina',
+    titulo: 'Conectando Conhecimento ao Futuro: O Impacto do 5G na Nova Geração',
+    palestrante: 'João Victor',
+    bio: 'Oficina de 5G',
+    horario: '13:20 - 15:00',
+    sala: 'Laboratório de Matemática',
+    dia: 1,
+    vagas: 30,
+    inscritos: 24,
+    desc: 'Exploração das tecnologias 5G e seus impactos no futuro da conectividade e inovação.'
+  },
+
+  {
+    id: 13,
+    tipo: 'keynote',
+    titulo: 'Premiações das Maratonas',
+    palestrante: 'Organização ERETec 2026',
+    bio: 'Cerimônia de Premiação',
+    horario: '15:30 - 16:00',
+    sala: 'Auditório Principal',
+    dia: 1,
+    vagas: 300,
+    inscritos: 210,
+    desc: 'Entrega das premiações para os vencedores das maratonas e competições.'
+  },
+
+  {
+    id: 14,
+    tipo: 'keynote',
+    titulo: 'Sorteios e Encerramento',
+    palestrante: 'Organização ERETec 2026',
+    bio: 'Encerramento Oficial',
+    horario: '16:00 - 16:30',
+    sala: 'Auditório Principal',
+    dia: 1,
+    vagas: 300,
+    inscritos: 240,
+    desc: 'Sorteios, agradecimentos finais e encerramento oficial do ERETec 2026.'
+  }
 ];
 
 export default function App() {
